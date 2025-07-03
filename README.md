@@ -284,6 +284,11 @@ For issues, questions, or contributions, please visit the [GitHub repository](ht
 
 ## Changelog
 
+### v0.5.4 (2025-01-03)
+- Fixed zod version compatibility issues
+- Resolved dependency conflicts between MCP SDK and Fish Audio SDK
+- Verified local dev and build functionality
+
 ### v0.5.3 (2025-01-03)
 - Fixed missing zod dependency causing module resolution errors
 - Improved compatibility when running via npx
