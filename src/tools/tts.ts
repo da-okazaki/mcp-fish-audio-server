@@ -121,9 +121,12 @@ export class TTSTool {
       
       // Determine if auto-play is enabled
       const shouldAutoPlay = input.auto_play ?? config.autoPlay;
+      
+      // Determine if WebSocket streaming is enabled
+      const useWebSocketStreaming = input.websocket_streaming ?? config.websocketStreaming;
 
       // WebSocket streaming mode with real-time playback
-      if (input.websocket_streaming) {
+      if (useWebSocketStreaming) {
         return await this.handleWebSocketStreaming(input, ttsParams, outputPath, shouldAutoPlay || false);
       }
       
@@ -206,7 +209,10 @@ export class TTSTool {
 
     try {
       // Set up real-time player if requested
-      if (input.realtime_play && isAudioPlaybackSupported()) {
+      const config = loadConfig();
+      const shouldRealtimePlay = input.realtime_play ?? config.realtimePlay;
+      
+      if (shouldRealtimePlay && isAudioPlaybackSupported()) {
         realTimePlayer = new RealTimeAudioPlayer();
         realTimePlayer.start(ttsParams.format || 'opus');
       }
@@ -231,7 +237,7 @@ export class TTSTool {
         }
         
         // Collect chunks for post-playback if auto-play is enabled
-        if (shouldAutoPlay && !input.realtime_play) {
+        if (shouldAutoPlay && !shouldRealtimePlay) {
           audioChunks.push(audioChunk);
         }
       }
@@ -248,14 +254,14 @@ export class TTSTool {
 
       // Auto-play collected audio if requested (and not already played in real-time)
       let played = false;
-      if (shouldAutoPlay && !input.realtime_play && outputPath && isAudioPlaybackSupported()) {
+      if (shouldAutoPlay && !shouldRealtimePlay && outputPath && isAudioPlaybackSupported()) {
         try {
           await playAudio(outputPath);
           played = true;
         } catch (playError) {
           console.error('Audio playback failed:', playError);
         }
-      } else if (input.realtime_play) {
+      } else if (shouldRealtimePlay) {
         played = true;
       }
 

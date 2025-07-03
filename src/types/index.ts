@@ -7,6 +7,8 @@ export interface Config {
   mp3Bitrate: Mp3Bitrate;
   audioOutputDir: string;
   autoPlay?: boolean;
+  websocketStreaming?: boolean;
+  realtimePlay?: boolean;
 }
 
 export type AudioFormat = 'mp3' | 'wav' | 'pcm' | 'opus';

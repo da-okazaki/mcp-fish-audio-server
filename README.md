@@ -77,6 +77,8 @@ export FISH_API_KEY=your_fish_audio_api_key_here
 | `FISH_LATENCY` | Latency mode (normal, balanced) | `balanced` | ❌ |
 | `FISH_MP3_BITRATE` | MP3 bitrate (64, 128, 192) | `128` | ❌ |
 | `FISH_AUTO_PLAY` | Automatically play generated audio | `false` | ❌ |
+| `FISH_WEBSOCKET_STREAMING` | Enable WebSocket streaming by default | Same as `FISH_STREAMING` | ❌ |
+| `FISH_REALTIME_PLAY` | Enable real-time playback by default | Same as `FISH_AUTO_PLAY` | ❌ |
 | `AUDIO_OUTPUT_DIR` | Directory for audio file output | `~/.fish-audio-mcp/audio_output` | ❌ |
 
 ## Usage
@@ -282,6 +284,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/da-okazaki/mcp-fish-audio-server).
 
 ## Changelog
+
+### v0.4.1 (2025-01-03)
+- Added intelligent environment variable mapping
+- FISH_WEBSOCKET_STREAMING defaults to FISH_STREAMING
+- FISH_REALTIME_PLAY defaults to FISH_AUTO_PLAY
+- Simplified configuration with smart defaults
 
 ### v0.4.0 (2025-01-03)
 - Refactored to use official Fish Audio SDK

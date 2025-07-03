@@ -51,15 +51,22 @@ export function loadConfig(): Config {
     console.error(`Warning: Could not create audio output directory at ${resolvedOutputDir}. Audio files will be saved to memory only.`);
   }
 
+  const streaming = parseBoolean(process.env.FISH_STREAMING, false);
+  const autoPlay = parseBoolean(process.env.FISH_AUTO_PLAY, false);
+  
   const config: Config = {
     apiKey,
     modelId: process.env.FISH_MODEL_ID || 's1',
     referenceId: process.env.FISH_REFERENCE_ID,
     outputFormat: parseAudioFormat(process.env.FISH_OUTPUT_FORMAT, 'mp3'),
-    streaming: parseBoolean(process.env.FISH_STREAMING, false),
+    streaming: streaming,
     mp3Bitrate: parseMp3Bitrate(process.env.FISH_MP3_BITRATE, 128),
     audioOutputDir: resolvedOutputDir,
-    autoPlay: parseBoolean(process.env.FISH_AUTO_PLAY, false)
+    autoPlay: autoPlay,
+    // Map FISH_STREAMING to websocketStreaming if FISH_WEBSOCKET_STREAMING is not set
+    websocketStreaming: parseBoolean(process.env.FISH_WEBSOCKET_STREAMING, streaming),
+    // Map FISH_AUTO_PLAY to realtimePlay if FISH_REALTIME_PLAY is not set
+    realtimePlay: parseBoolean(process.env.FISH_REALTIME_PLAY, autoPlay)
   };
 
   configCache = config;
