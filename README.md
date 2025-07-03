@@ -284,6 +284,11 @@ For issues, questions, or contributions, please visit the [GitHub repository](ht
 
 ## Changelog
 
+### v0.5.2 (2025-01-03)
+- Fixed audio playback issue with FISH_STREAMING=true
+- Fixed tilde (~) expansion in AUDIO_OUTPUT_DIR
+- Improved stability by separating HTTP and WebSocket streaming
+
 ### v0.5.1 (2025-01-03)
 - Improved documentation formatting and clarity
 - Updated environment variables table for better readability

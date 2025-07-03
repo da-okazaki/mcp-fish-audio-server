@@ -39,7 +39,13 @@ export function loadConfig(): Config {
 
   // Default to user's home directory for audio output
   const defaultOutputDir = join(homedir(), '.fish-audio-mcp', 'audio_output');
-  const audioOutputDir = process.env.AUDIO_OUTPUT_DIR || defaultOutputDir;
+  let audioOutputDir = process.env.AUDIO_OUTPUT_DIR || defaultOutputDir;
+  
+  // Expand ~ to home directory if present
+  if (audioOutputDir.startsWith('~/')) {
+    audioOutputDir = join(homedir(), audioOutputDir.slice(2));
+  }
+  
   const resolvedOutputDir = resolve(audioOutputDir);
   
   // Create output directory if it doesn't exist
@@ -63,8 +69,8 @@ export function loadConfig(): Config {
     mp3Bitrate: parseMp3Bitrate(process.env.FISH_MP3_BITRATE, 128),
     audioOutputDir: resolvedOutputDir,
     autoPlay: autoPlay,
-    websocketStreaming: streaming,
-    realtimePlay: autoPlay
+    websocketStreaming: false,  // Default to false for HTTP streaming
+    realtimePlay: false  // Default to false for standard playback
   };
 
   configCache = config;

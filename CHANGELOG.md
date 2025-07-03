@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.2] - 2025-01-03
+
+### Fixed
+- Fixed audio playback not working when FISH_STREAMING=true and FISH_AUTO_PLAY=true
+- Fixed tilde (~) expansion in AUDIO_OUTPUT_DIR environment variable
+- Separated HTTP streaming from WebSocket streaming to prevent connection issues
+- WebSocket streaming now requires explicit enabling via tool parameters
+
+### Changed
+- FISH_STREAMING now only controls HTTP streaming (not WebSocket)
+- WebSocket streaming defaults to false to improve stability
+
 ## [0.5.1] - 2025-01-03
 
 ### Changed
