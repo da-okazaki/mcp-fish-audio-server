@@ -1,6 +1,6 @@
 {
-  "name": "fish-audio-mcp-server",
-  "version": "0.1.1",
+  "name": "@alanse/fish-audio-mcp-server",
+  "version": "0.1.2",
   "description": "MCP server for Fish Audio Text-to-Speech integration",
   "main": "dist/index.js",
   "type": "module",

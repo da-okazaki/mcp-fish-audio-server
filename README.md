@@ -1,6 +1,6 @@
 # Fish Audio MCP Server
 
-[![npm version](https://badge.fury.io/js/fish-audio-mcp-server.svg)](https://badge.fury.io/js/fish-audio-mcp-server)
+[![npm version](https://badge.fury.io/js/@alanse%2Ffish-audio-mcp-server.svg)](https://badge.fury.io/js/@alanse%2Ffish-audio-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <a href="https://glama.ai/mcp/servers/fish-audio-mcp-server"><img width="380" height="200" src="https://glama.ai/mcp/servers/fish-audio-mcp-server/badge" alt="Fish Audio MCP Server" /></a>
@@ -23,13 +23,13 @@ An MCP (Model Context Protocol) server that provides seamless integration betwee
 You can run this MCP server directly using npx:
 
 ```bash
-npx fish-audio-mcp-server
+npx @alanse/fish-audio-mcp-server
 ```
 
 Or install it globally:
 
 ```bash
-npm install -g fish-audio-mcp-server
+npm install -g @alanse/fish-audio-mcp-server
 ```
 
 ### Configuration
@@ -49,7 +49,7 @@ export FISH_API_KEY=your_fish_audio_api_key_here
   "mcpServers": {
     "fish-audio": {
       "command": "npx",
-      "args": ["fish-audio-mcp-server"],
+      "args": ["@alanse/fish-audio-mcp-server"],
       "env": {
         "FISH_API_KEY": "your_fish_audio_api_key_here",
         "FISH_MODEL_ID": "s1",
@@ -263,6 +263,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/da-okazaki/mcp-fish-audio-server).
 
 ## Changelog
+
+### v0.1.2 (2025-01-03)
+- Changed npm package name to @alanse/fish-audio-mcp-server
 
 ### v0.1.1 (2025-01-03)
 - Fixed directory creation error when running via npx
