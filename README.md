@@ -1,6 +1,6 @@
 # Fish Audio MCP Server
 
-[![npm version](https://badge.fury.io/js/@da-okazaki%2Ffish-audio-mcp-server.svg)](https://badge.fury.io/js/@da-okazaki%2Ffish-audio-mcp-server)
+[![npm version](https://badge.fury.io/js/fish-audio-mcp-server.svg)](https://badge.fury.io/js/fish-audio-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 An MCP (Model Context Protocol) server that provides seamless integration between Fish Audio's Text-to-Speech API and LLMs like Claude, enabling natural language-driven speech synthesis.
@@ -21,13 +21,13 @@ An MCP (Model Context Protocol) server that provides seamless integration betwee
 You can run this MCP server directly using npx:
 
 ```bash
-npx @da-okazaki/fish-audio-mcp-server
+npx fish-audio-mcp-server
 ```
 
 Or install it globally:
 
 ```bash
-npm install -g @da-okazaki/fish-audio-mcp-server
+npm install -g fish-audio-mcp-server
 ```
 
 ### Configuration
@@ -47,7 +47,7 @@ export FISH_API_KEY=your_fish_audio_api_key_here
   "mcpServers": {
     "fish-audio": {
       "command": "npx",
-      "args": ["@da-okazaki/fish-audio-mcp-server"],
+      "args": ["fish-audio-mcp-server"],
       "env": {
         "FISH_API_KEY": "your_fish_audio_api_key_here",
         "FISH_MODEL_ID": "s1",

@@ -1,5 +1,5 @@
 {
-  "name": "@da-okazaki/fish-audio-mcp-server",
+  "name": "fish-audio-mcp-server",
   "version": "0.1.0",
   "description": "MCP server for Fish Audio Text-to-Speech integration",
   "main": "dist/index.js",
