@@ -22,6 +22,7 @@ export interface TTSParams {
   latency?: LatencyMode;
   chunkLength?: number;
   streaming?: boolean;
+  websocketStreaming?: boolean;
 }
 
 export interface TTSResponse {
@@ -34,6 +35,8 @@ export interface TTSToolParams {
   text: string;
   reference_id?: string;
   streaming?: boolean;
+  websocket_streaming?: boolean;
+  realtime_play?: boolean;
   format?: AudioFormat;
   mp3_bitrate?: Mp3Bitrate;
   normalize?: boolean;
@@ -48,6 +51,8 @@ export interface TTSToolResponse {
   file_path?: string;
   format?: string;
   played?: boolean;
+  streaming_mode?: 'http' | 'websocket';
+  total_bytes?: number;
   error?: string;
 }
 

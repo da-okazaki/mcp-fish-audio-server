@@ -25,7 +25,13 @@ function parseMp3Bitrate(value: string | undefined, defaultValue: Mp3Bitrate): M
   return validBitrates.includes(bitrate as Mp3Bitrate) ? (bitrate as Mp3Bitrate) : defaultValue;
 }
 
+let configCache: Config | null = null;
+
 export function loadConfig(): Config {
+  if (configCache) {
+    return configCache;
+  }
+
   const apiKey = process.env.FISH_API_KEY;
   if (!apiKey) {
     throw new Error('FISH_API_KEY environment variable is required');
@@ -56,6 +62,7 @@ export function loadConfig(): Config {
     autoPlay: parseBoolean(process.env.FISH_AUTO_PLAY, false)
   };
 
+  configCache = config;
   return config;
 }
 

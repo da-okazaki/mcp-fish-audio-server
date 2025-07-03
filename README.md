@@ -96,6 +96,8 @@ Generates speech from text using Fish Audio's TTS API.
 - `latency` (optional): Latency mode (normal, balanced)
 - `output_path` (optional): Custom output file path
 - `auto_play` (optional): Automatically play the generated audio
+- `websocket_streaming` (optional): Use WebSocket streaming instead of HTTP
+- `realtime_play` (optional): Play audio in real-time during WebSocket streaming
 
 ### Examples
 
@@ -123,7 +125,7 @@ Claude: I'll generate speech using the specified voice model.
 Result: Audio generated with custom voice model xyz123
 ```
 
-#### Streaming Mode
+#### HTTP Streaming Mode
 
 ```
 User: "Generate a long speech in streaming mode about the benefits of AI"
@@ -133,6 +135,18 @@ Claude: I'll generate the speech in streaming mode for faster response.
 [Uses fish_audio_tts tool with streaming: true]
 
 Result: Streaming audio saved to ./audio_output/tts_2025-01-03T10-35-00.mp3
+```
+
+#### WebSocket Real-time Streaming
+
+```
+User: "Stream and play in real-time: 'Welcome to the future of AI'"
+
+Claude: I'll stream the speech via WebSocket and play it in real-time.
+
+[Uses fish_audio_tts tool with websocket_streaming: true, realtime_play: true]
+
+Result: Audio streamed and played in real-time via WebSocket
 ```
 
 ## Development
@@ -267,11 +281,26 @@ For issues, questions, or contributions, please visit the [GitHub repository](ht
 
 ## Changelog
 
+### v0.4.0 (2025-01-03)
+- Refactored to use official Fish Audio SDK
+- Improved WebSocket streaming implementation
+- Fixed auto-play functionality
+- Better error handling and connection stability
+- Latency parameter now properly supported (normal/balanced)
+- Cleaner codebase with SDK integration
+
+### v0.3.0 (2025-01-03)
+- Added WebSocket streaming support for real-time TTS
+- Added real-time audio playback during WebSocket streaming
+- New parameters: `websocket_streaming` and `realtime_play`
+- Support for both HTTP and WebSocket streaming modes
+- Real-time player for immediate audio output
+
 ### v0.2.0 (2025-01-03)
 - Added automatic audio playback feature with `auto_play` parameter
 - Added FISH_AUTO_PLAY environment variable for default behavior
 - Support for cross-platform audio playback (macOS, Windows, Linux)
-- Streaming mode now uses HTTP streaming (not WebSocket)
+- HTTP streaming mode implementation
 
 ### v0.1.2 (2025-01-03)
 - Changed npm package name to @alanse/fish-audio-mcp-server

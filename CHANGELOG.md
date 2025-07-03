@@ -5,6 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2025-01-03
+
+### Added
+- Integration with official Fish Audio SDK
+- Proper latency parameter support (normal/balanced)
+- Config caching for better performance
+
+### Changed
+- Refactored entire codebase to use Fish Audio SDK
+- Improved WebSocket streaming stability
+- Better error handling with SDK error types
+- Simplified API calls using SDK methods
+
+### Fixed
+- Auto-play functionality now works correctly
+- Connection stability issues resolved
+- Memory efficiency improvements
+
+### Removed
+- Custom API implementation (replaced by SDK)
+- Direct axios calls (handled by SDK)
+
+## [0.3.0] - 2025-01-03
+
+### Added
+- WebSocket streaming support for real-time TTS via `wss://api.fish.audio/v1/tts/live`
+- Real-time audio playback during WebSocket streaming with `realtime_play` parameter
+- `websocket_streaming` parameter to enable WebSocket mode
+- `FishAudioWebSocketService` for handling WebSocket connections
+- `RealTimeAudioPlayer` utility for immediate audio output
+- Support for both HTTP and WebSocket streaming modes
+- MessagePack encoding/decoding for WebSocket communication
+
+### Changed
+- TTS tool now supports three modes: standard, HTTP streaming, and WebSocket streaming
+- Response includes `streaming_mode` and `total_bytes` information
+- Updated documentation with WebSocket examples
+
+### Technical Details
+- WebSocket uses MessagePack for message encoding
+- Real-time player supports multiple platforms (ffplay, mpv, afplay)
+- Text is chunked for optimal WebSocket streaming performance
+
 ## [0.2.0] - 2025-01-03
 
 ### Added

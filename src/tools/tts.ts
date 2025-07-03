@@ -1,15 +1,17 @@
-import { FishAudioService } from '../services/fishAudio.js';
+import { FishAudioSDKService } from '../services/fishAudioSDK.js';
 import { 
   TTSToolParams, 
   TTSToolResponse,
+  TTSParams,
   AudioFormat,
   Mp3Bitrate,
   LatencyMode,
   FishAudioError
 } from '../types/index.js';
 import { loadConfig, getOutputPath } from '../utils/config.js';
-import { writeFileSync } from 'fs';
+import { writeFileSync, createWriteStream } from 'fs';
 import { playAudio, isAudioPlaybackSupported } from '../utils/audioPlayer.js';
+import { RealTimeAudioPlayer } from '../utils/realTimePlayer.js';
 
 export class TTSTool {
   name = 'fish_audio_tts';
@@ -29,7 +31,17 @@ export class TTSTool {
       },
       streaming: {
         type: 'boolean',
-        description: 'Enable streaming mode (optional)',
+        description: 'Enable HTTP streaming mode (optional)',
+        default: false
+      },
+      websocket_streaming: {
+        type: 'boolean',
+        description: 'Enable WebSocket streaming mode (optional)',
+        default: false
+      },
+      realtime_play: {
+        type: 'boolean',
+        description: 'Enable real-time audio playback during streaming (optional)',
         default: false
       },
       format: {
@@ -68,10 +80,10 @@ export class TTSTool {
     required: ['text']
   };
 
-  private service: FishAudioService;
+  private service: FishAudioSDKService;
 
   constructor() {
-    this.service = new FishAudioService();
+    this.service = new FishAudioSDKService();
   }
 
   async run(input: TTSToolParams): Promise<TTSToolResponse> {
@@ -110,14 +122,14 @@ export class TTSTool {
       // Determine if auto-play is enabled
       const shouldAutoPlay = input.auto_play ?? config.autoPlay;
 
+      // WebSocket streaming mode with real-time playback
+      if (input.websocket_streaming) {
+        return await this.handleWebSocketStreaming(input, ttsParams, outputPath, shouldAutoPlay || false);
+      }
+      
       if (ttsParams.streaming) {
-        // Streaming mode
-        const generator = this.service.generateSpeechStream(ttsParams, outputPath);
-        let totalBytes = 0;
-        
-        for await (const bytes of generator) {
-          totalBytes = bytes;
-        }
+        // HTTP Streaming mode
+        const totalBytes = await this.service.generateSpeechStream(ttsParams, outputPath);
 
         // Auto-play if requested
         if (shouldAutoPlay && isAudioPlaybackSupported()) {
@@ -179,5 +191,112 @@ export class TTSTool {
         error: error instanceof Error ? error.message : 'Unknown error occurred'
       };
     }
+  }
+
+  private async handleWebSocketStreaming(
+    input: TTSToolParams,
+    ttsParams: TTSParams,
+    outputPath: string,
+    shouldAutoPlay: boolean
+  ): Promise<TTSToolResponse> {
+    const writeStream = outputPath ? createWriteStream(outputPath) : null;
+    let realTimePlayer: RealTimeAudioPlayer | null = null;
+    let totalBytes = 0;
+    const audioChunks: Buffer[] = [];
+
+    try {
+      // Set up real-time player if requested
+      if (input.realtime_play && isAudioPlaybackSupported()) {
+        realTimePlayer = new RealTimeAudioPlayer();
+        realTimePlayer.start(ttsParams.format || 'opus');
+      }
+
+      // Split text into chunks for streaming
+      const textChunks = this.splitTextIntoChunks(input.text);
+
+      // Stream via WebSocket
+      const audioStream = this.service.generateSpeechWebSocket(ttsParams, textChunks);
+
+      for await (const audioChunk of audioStream) {
+        totalBytes += audioChunk.length;
+        
+        // Write to file if output path specified
+        if (writeStream) {
+          writeStream.write(audioChunk);
+        }
+        
+        // Play in real-time if requested
+        if (realTimePlayer) {
+          realTimePlayer.write(audioChunk);
+        }
+        
+        // Collect chunks for post-playback if auto-play is enabled
+        if (shouldAutoPlay && !input.realtime_play) {
+          audioChunks.push(audioChunk);
+        }
+      }
+
+      // Close write stream
+      if (writeStream) {
+        writeStream.end();
+      }
+
+      // Stop real-time player
+      if (realTimePlayer) {
+        realTimePlayer.stop();
+      }
+
+      // Auto-play collected audio if requested (and not already played in real-time)
+      let played = false;
+      if (shouldAutoPlay && !input.realtime_play && outputPath && isAudioPlaybackSupported()) {
+        try {
+          await playAudio(outputPath);
+          played = true;
+        } catch (playError) {
+          console.error('Audio playback failed:', playError);
+        }
+      } else if (input.realtime_play) {
+        played = true;
+      }
+
+      return {
+        success: true,
+        file_path: outputPath || undefined,
+        format: ttsParams.format,
+        played,
+        streaming_mode: 'websocket',
+        total_bytes: totalBytes
+      };
+    } catch (error) {
+      // Clean up on error
+      if (writeStream) {
+        writeStream.end();
+      }
+      if (realTimePlayer) {
+        realTimePlayer.stop();
+      }
+      throw error;
+    }
+  }
+
+  private splitTextIntoChunks(text: string, chunkSize: number = 100): string[] {
+    const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+    const chunks: string[] = [];
+    let currentChunk = '';
+
+    for (const sentence of sentences) {
+      if (currentChunk.length + sentence.length > chunkSize && currentChunk.length > 0) {
+        chunks.push(currentChunk.trim());
+        currentChunk = sentence;
+      } else {
+        currentChunk += sentence;
+      }
+    }
+
+    if (currentChunk.trim()) {
+      chunks.push(currentChunk.trim());
+    }
+
+    return chunks;
   }
 }
