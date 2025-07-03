@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1] - 2025-01-03
+
+### Changed
+- Improved README documentation formatting
+- Changed "Required" column in environment variables table to use text instead of emojis
+- Updated references from "Claude Desktop" to "MCP Settings" for broader compatibility
+- Added AUDIO_OUTPUT_DIR to the configuration example
+- Updated FISH_STREAMING description to clarify it controls both HTTP and WebSocket streaming
+- Updated FISH_AUTO_PLAY description to clarify it controls both auto-play and real-time playback
+
 ## [0.5.0] - 2025-01-03
 
 ### Breaking Changes

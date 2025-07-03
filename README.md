@@ -14,7 +14,7 @@ An MCP (Model Context Protocol) server that provides seamless integration betwee
 - 🎨 **Multiple Voices**: Support for custom voice models via reference IDs
 - 🔧 **Flexible Configuration**: Environment variable-based configuration
 - 📦 **Multiple Audio Formats**: Support for MP3, WAV, PCM, and Opus
-- 🚀 **Easy Integration**: Simple setup with Claude Desktop or any MCP client
+- 🚀 **Easy Integration**: Simple setup with any MCP-compatible client
 
 ## Quick Start
 
@@ -42,7 +42,7 @@ npm install -g @alanse/fish-audio-mcp-server
 export FISH_API_KEY=your_fish_audio_api_key_here
 ```
 
-3. Add to your Claude Desktop configuration:
+3. Add to your MCP settings configuration:
 
 ```json
 {
@@ -58,7 +58,8 @@ export FISH_API_KEY=your_fish_audio_api_key_here
         "FISH_STREAMING": "false",
         "FISH_LATENCY": "balanced",
         "FISH_MP3_BITRATE": "128",
-        "FISH_AUTO_PLAY": "false"
+        "FISH_AUTO_PLAY": "false",
+        "AUDIO_OUTPUT_DIR": "~/.fish-audio-mcp/audio_output"
       }
     }
   }
@@ -69,15 +70,15 @@ export FISH_API_KEY=your_fish_audio_api_key_here
 
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
-| `FISH_API_KEY` | Your Fish Audio API key | - | ✅ |
-| `FISH_MODEL_ID` | TTS model to use (s1, speech-1.5, speech-1.6) | `s1` | ❌ |
-| `FISH_REFERENCE_ID` | Default voice reference ID | - | ❌ |
-| `FISH_OUTPUT_FORMAT` | Default audio format (mp3, wav, pcm, opus) | `mp3` | ❌ |
-| `FISH_STREAMING` | Enable HTTP streaming by default | `false` | ❌ |
-| `FISH_LATENCY` | Latency mode (normal, balanced) | `balanced` | ❌ |
-| `FISH_MP3_BITRATE` | MP3 bitrate (64, 128, 192) | `128` | ❌ |
-| `FISH_AUTO_PLAY` | Automatically play generated audio | `false` | ❌ |
-| `AUDIO_OUTPUT_DIR` | Directory for audio file output | `~/.fish-audio-mcp/audio_output` | ❌ |
+| `FISH_API_KEY` | Your Fish Audio API key | - | Yes |
+| `FISH_MODEL_ID` | TTS model to use (s1, speech-1.5, speech-1.6) | `s1` | Optional |
+| `FISH_REFERENCE_ID` | Default voice reference ID | - | Optional |
+| `FISH_OUTPUT_FORMAT` | Default audio format (mp3, wav, pcm, opus) | `mp3` | Optional |
+| `FISH_STREAMING` | Enable streaming mode (HTTP/WebSocket) | `false` | Optional |
+| `FISH_LATENCY` | Latency mode (normal, balanced) | `balanced` | Optional |
+| `FISH_MP3_BITRATE` | MP3 bitrate (64, 128, 192) | `128` | Optional |
+| `FISH_AUTO_PLAY` | Auto-play audio and enable real-time playback | `false` | Optional |
+| `AUDIO_OUTPUT_DIR` | Directory for audio file output | `~/.fish-audio-mcp/audio_output` | Optional |
 
 ## Usage
 
@@ -282,6 +283,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/da-okazaki/mcp-fish-audio-server).
 
 ## Changelog
+
+### v0.5.1 (2025-01-03)
+- Improved documentation formatting and clarity
+- Updated environment variables table for better readability
+- Made documentation more generic for all MCP clients
 
 ### v0.5.0 (2025-01-03)
 - Simplified environment variables: removed FISH_WEBSOCKET_STREAMING and FISH_REALTIME_PLAY
