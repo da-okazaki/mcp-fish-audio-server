@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2025-01-03
+
+### Breaking Changes
+- Removed `FISH_WEBSOCKET_STREAMING` environment variable
+- Removed `FISH_REALTIME_PLAY` environment variable
+- WebSocket streaming is now controlled by `FISH_STREAMING`
+- Real-time playback is now controlled by `FISH_AUTO_PLAY`
+
+### Changed
+- Simplified environment variable configuration
+- `websocket_streaming` parameter now defaults to `FISH_STREAMING` value
+- `realtime_play` parameter now defaults to `FISH_AUTO_PLAY` value
+- Cleaner configuration with unified controls
+
+### Migration Guide
+- Remove `FISH_WEBSOCKET_STREAMING` from your config (use `FISH_STREAMING` instead)
+- Remove `FISH_REALTIME_PLAY` from your config (use `FISH_AUTO_PLAY` instead)
+
 ## [0.4.1] - 2025-01-03
 
 ### Added

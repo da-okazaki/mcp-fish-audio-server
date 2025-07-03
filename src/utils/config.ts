@@ -63,10 +63,8 @@ export function loadConfig(): Config {
     mp3Bitrate: parseMp3Bitrate(process.env.FISH_MP3_BITRATE, 128),
     audioOutputDir: resolvedOutputDir,
     autoPlay: autoPlay,
-    // Map FISH_STREAMING to websocketStreaming if FISH_WEBSOCKET_STREAMING is not set
-    websocketStreaming: parseBoolean(process.env.FISH_WEBSOCKET_STREAMING, streaming),
-    // Map FISH_AUTO_PLAY to realtimePlay if FISH_REALTIME_PLAY is not set
-    realtimePlay: parseBoolean(process.env.FISH_REALTIME_PLAY, autoPlay)
+    websocketStreaming: streaming,
+    realtimePlay: autoPlay
   };
 
   configCache = config;
