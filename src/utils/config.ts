@@ -1,7 +1,8 @@
 import { config as dotenvConfig } from 'dotenv';
 import { Config, AudioFormat, Mp3Bitrate } from '../types/index.js';
 import { existsSync, mkdirSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
+import { homedir } from 'os';
 
 dotenvConfig();
 
@@ -30,11 +31,18 @@ export function loadConfig(): Config {
     throw new Error('FISH_API_KEY environment variable is required');
   }
 
-  const audioOutputDir = process.env.AUDIO_OUTPUT_DIR || './audio_output';
+  // Default to user's home directory for audio output
+  const defaultOutputDir = join(homedir(), '.fish-audio-mcp', 'audio_output');
+  const audioOutputDir = process.env.AUDIO_OUTPUT_DIR || defaultOutputDir;
+  const resolvedOutputDir = resolve(audioOutputDir);
   
   // Create output directory if it doesn't exist
-  if (!existsSync(audioOutputDir)) {
-    mkdirSync(audioOutputDir, { recursive: true });
+  try {
+    if (!existsSync(resolvedOutputDir)) {
+      mkdirSync(resolvedOutputDir, { recursive: true });
+    }
+  } catch (error) {
+    console.error(`Warning: Could not create audio output directory at ${resolvedOutputDir}. Audio files will be saved to memory only.`);
   }
 
   const config: Config = {
@@ -44,7 +52,7 @@ export function loadConfig(): Config {
     outputFormat: parseAudioFormat(process.env.FISH_OUTPUT_FORMAT, 'mp3'),
     streaming: parseBoolean(process.env.FISH_STREAMING, false),
     mp3Bitrate: parseMp3Bitrate(process.env.FISH_MP3_BITRATE, 128),
-    audioOutputDir
+    audioOutputDir: resolvedOutputDir
   };
 
   return config;

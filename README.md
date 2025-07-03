@@ -73,7 +73,7 @@ export FISH_API_KEY=your_fish_audio_api_key_here
 | `FISH_OUTPUT_FORMAT` | Default audio format (mp3, wav, pcm, opus) | `mp3` | ❌ |
 | `FISH_STREAMING` | Enable streaming by default | `false` | ❌ |
 | `FISH_MP3_BITRATE` | MP3 bitrate (64, 128, 192) | `128` | ❌ |
-| `AUDIO_OUTPUT_DIR` | Directory for audio file output | `./audio_output` | ❌ |
+| `AUDIO_OUTPUT_DIR` | Directory for audio file output | `~/.fish-audio-mcp/audio_output` | ❌ |
 
 ## Usage
 
@@ -263,6 +263,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/da-okazaki/mcp-fish-audio-server).
 
 ## Changelog
+
+### v0.1.1 (2025-01-03)
+- Fixed directory creation error when running via npx
+- Changed default audio output to user's home directory
 
 ### v0.1.0 (2025-01-03)
 - Initial release
