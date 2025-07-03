@@ -284,6 +284,10 @@ For issues, questions, or contributions, please visit the [GitHub repository](ht
 
 ## Changelog
 
+### v0.5.3 (2025-01-03)
+- Fixed missing zod dependency causing module resolution errors
+- Improved compatibility when running via npx
+
 ### v0.5.2 (2025-01-03)
 - Fixed audio playback issue with FISH_STREAMING=true
 - Fixed tilde (~) expansion in AUDIO_OUTPUT_DIR
