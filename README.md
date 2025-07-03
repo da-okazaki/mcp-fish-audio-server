@@ -3,6 +3,8 @@
 [![npm version](https://badge.fury.io/js/fish-audio-mcp-server.svg)](https://badge.fury.io/js/fish-audio-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+<a href="https://glama.ai/mcp/servers/fish-audio-mcp-server"><img width="380" height="200" src="https://glama.ai/mcp/servers/fish-audio-mcp-server/badge" alt="Fish Audio MCP Server" /></a>
+
 An MCP (Model Context Protocol) server that provides seamless integration between Fish Audio's Text-to-Speech API and LLMs like Claude, enabling natural language-driven speech synthesis.
 
 ## Features
