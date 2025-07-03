@@ -6,6 +6,7 @@ export interface Config {
   streaming: boolean;
   mp3Bitrate: Mp3Bitrate;
   audioOutputDir: string;
+  autoPlay?: boolean;
 }
 
 export type AudioFormat = 'mp3' | 'wav' | 'pcm' | 'opus';
@@ -38,6 +39,7 @@ export interface TTSToolParams {
   normalize?: boolean;
   latency?: LatencyMode;
   output_path?: string;
+  auto_play?: boolean;
 }
 
 export interface TTSToolResponse {
@@ -45,6 +47,7 @@ export interface TTSToolResponse {
   audio_data?: string; // Base64 encoded
   file_path?: string;
   format?: string;
+  played?: boolean;
   error?: string;
 }
 

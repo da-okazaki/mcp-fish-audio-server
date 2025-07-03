@@ -52,7 +52,8 @@ export function loadConfig(): Config {
     outputFormat: parseAudioFormat(process.env.FISH_OUTPUT_FORMAT, 'mp3'),
     streaming: parseBoolean(process.env.FISH_STREAMING, false),
     mp3Bitrate: parseMp3Bitrate(process.env.FISH_MP3_BITRATE, 128),
-    audioOutputDir: resolvedOutputDir
+    audioOutputDir: resolvedOutputDir,
+    autoPlay: parseBoolean(process.env.FISH_AUTO_PLAY, false)
   };
 
   return config;

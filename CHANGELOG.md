@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2025-01-03
+
+### Added
+- Automatic audio playback feature with `auto_play` parameter
+- Cross-platform audio playback support (macOS, Windows, Linux)
+- FISH_AUTO_PLAY environment variable for default playback behavior
+- Audio player utility for handling platform-specific playback
+
+### Changed
+- TTS tool now returns `played` status in response
+- Updated documentation with auto-play feature
+
+### Technical Notes
+- Streaming mode uses HTTP streaming API (not WebSocket)
+- Audio playback is handled through native OS commands
+
 ## [0.1.2] - 2025-01-03
 
 ### Changed

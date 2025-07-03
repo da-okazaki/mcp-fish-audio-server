@@ -56,7 +56,8 @@ export FISH_API_KEY=your_fish_audio_api_key_here
         "FISH_REFERENCE_ID": "your_voice_reference_id_here",
         "FISH_OUTPUT_FORMAT": "mp3",
         "FISH_STREAMING": "false",
-        "FISH_MP3_BITRATE": "128"
+        "FISH_MP3_BITRATE": "128",
+        "FISH_AUTO_PLAY": "false"
       }
     }
   }
@@ -73,6 +74,7 @@ export FISH_API_KEY=your_fish_audio_api_key_here
 | `FISH_OUTPUT_FORMAT` | Default audio format (mp3, wav, pcm, opus) | `mp3` | ❌ |
 | `FISH_STREAMING` | Enable streaming by default | `false` | ❌ |
 | `FISH_MP3_BITRATE` | MP3 bitrate (64, 128, 192) | `128` | ❌ |
+| `FISH_AUTO_PLAY` | Automatically play generated audio | `false` | ❌ |
 | `AUDIO_OUTPUT_DIR` | Directory for audio file output | `~/.fish-audio-mcp/audio_output` | ❌ |
 
 ## Usage
@@ -93,6 +95,7 @@ Generates speech from text using Fish Audio's TTS API.
 - `normalize` (optional): Enable text normalization (default: true)
 - `latency` (optional): Latency mode (normal, balanced)
 - `output_path` (optional): Custom output file path
+- `auto_play` (optional): Automatically play the generated audio
 
 ### Examples
 
@@ -263,6 +266,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/da-okazaki/mcp-fish-audio-server).
 
 ## Changelog
+
+### v0.2.0 (2025-01-03)
+- Added automatic audio playback feature with `auto_play` parameter
+- Added FISH_AUTO_PLAY environment variable for default behavior
+- Support for cross-platform audio playback (macOS, Windows, Linux)
+- Streaming mode now uses HTTP streaming (not WebSocket)
 
 ### v0.1.2 (2025-01-03)
 - Changed npm package name to @alanse/fish-audio-mcp-server

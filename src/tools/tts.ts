@@ -9,6 +9,7 @@ import {
 } from '../types/index.js';
 import { loadConfig, getOutputPath } from '../utils/config.js';
 import { writeFileSync } from 'fs';
+import { playAudio, isAudioPlaybackSupported } from '../utils/audioPlayer.js';
 
 export class TTSTool {
   name = 'fish_audio_tts';
@@ -57,6 +58,11 @@ export class TTSTool {
       output_path: {
         type: 'string',
         description: 'Custom output file path (optional)'
+      },
+      auto_play: {
+        type: 'boolean',
+        description: 'Automatically play the generated audio (optional)',
+        default: false
       }
     },
     required: ['text']
@@ -100,6 +106,9 @@ export class TTSTool {
 
       // Determine output path
       const outputPath = input.output_path || getOutputPath(ttsParams.format || 'mp3');
+      
+      // Determine if auto-play is enabled
+      const shouldAutoPlay = input.auto_play ?? config.autoPlay;
 
       if (ttsParams.streaming) {
         // Streaming mode
@@ -110,10 +119,20 @@ export class TTSTool {
           totalBytes = bytes;
         }
 
+        // Auto-play if requested
+        if (shouldAutoPlay && isAudioPlaybackSupported()) {
+          try {
+            await playAudio(outputPath);
+          } catch (playError) {
+            console.error('Audio playback failed:', playError);
+          }
+        }
+
         return {
           success: true,
           file_path: outputPath,
-          format: ttsParams.format
+          format: ttsParams.format,
+          played: shouldAutoPlay || false
         };
       } else {
         // Non-streaming mode
@@ -122,10 +141,21 @@ export class TTSTool {
         // Save to file if output path is specified
         if (outputPath) {
           writeFileSync(outputPath, response.audio);
+          
+          // Auto-play if requested
+          if (shouldAutoPlay && isAudioPlaybackSupported()) {
+            try {
+              await playAudio(outputPath);
+            } catch (playError) {
+              console.error('Audio playback failed:', playError);
+            }
+          }
+          
           return {
             success: true,
             file_path: outputPath,
-            format: response.format
+            format: response.format,
+            played: shouldAutoPlay || false
           };
         } else {
           // Return base64 encoded audio
