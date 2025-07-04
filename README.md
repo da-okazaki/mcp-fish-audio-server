@@ -69,7 +69,7 @@ export FISH_API_KEY=your_fish_audio_api_key_here
       "args": ["-y", "@alanse/fish-audio-mcp-server"],
       "env": {
         "FISH_API_KEY": "your_fish_audio_api_key_here",
-        "FISH_MODEL_ID": "s1",
+        "FISH_MODEL_ID": "speech-1.6",
         "FISH_REFERENCE_ID": "your_voice_reference_id_here",
         "FISH_OUTPUT_FORMAT": "mp3",
         "FISH_STREAMING": "false",
