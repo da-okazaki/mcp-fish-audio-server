@@ -9,6 +9,7 @@ import {
 import { TTSTool } from './tools/tts.js';
 import { ListReferencesTool } from './tools/listReferences.js';
 import { loadConfig } from './utils/config.js';
+import { logger } from './utils/logger.js';
 
 async function main() {
   try {
@@ -64,26 +65,26 @@ async function main() {
     const transport = new StdioServerTransport();
     await server.connect(transport);
     
-    console.error('Fish Audio MCP Server started successfully');
+    logger.info('Fish Audio MCP Server started successfully');
   } catch (error) {
-    console.error('Failed to start Fish Audio MCP Server:', error);
+    logger.error('Failed to start Fish Audio MCP Server:', error);
     process.exit(1);
   }
 }
 
 // Handle graceful shutdown
 process.on('SIGINT', () => {
-  console.error('Shutting down Fish Audio MCP Server...');
+  logger.info('Shutting down Fish Audio MCP Server...');
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
-  console.error('Shutting down Fish Audio MCP Server...');
+  logger.info('Shutting down Fish Audio MCP Server...');
   process.exit(0);
 });
 
 // Run the server
 main().catch((error) => {
-  console.error('Unhandled error:', error);
+  logger.error('Unhandled error:', error);
   process.exit(1);
 });

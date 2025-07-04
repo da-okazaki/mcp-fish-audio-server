@@ -1,6 +1,7 @@
 import { spawn, ChildProcess } from 'child_process';
 import { platform } from 'os';
 import { Readable, PassThrough } from 'stream';
+import { logger } from './logger.js';
 
 export class RealTimeAudioPlayer {
   private process: ChildProcess | null = null;
@@ -56,7 +57,7 @@ export class RealTimeAudioPlayer {
       });
 
       this.process.on('error', (error) => {
-        console.error(`Audio player error: ${error.message}`);
+        logger.error(`Audio player error:`, error);
         // Try alternative player on Linux
         if (this.os === 'linux' && command === 'mpv') {
           this.process = spawn('ffplay', ['-f', format, '-nodisp', '-autoexit', '-i', 'pipe:0'], {

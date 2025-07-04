@@ -3,6 +3,7 @@ import { Config, AudioFormat, Mp3Bitrate, ReferenceConfig } from '../types/index
 import { existsSync, mkdirSync } from 'fs';
 import { join, resolve } from 'path';
 import { homedir } from 'os';
+import { logger } from './logger.js';
 
 dotenvConfig();
 
@@ -47,8 +48,8 @@ function parseReferences(): ReferenceConfig[] {
         }
       }
     } catch (error) {
-      console.error('Failed to parse FISH_REFERENCES as JSON:', error);
-      console.error('Please use JSON array format: [{"reference_id":"id1","name":"Alice","tags":["female","english"]}]');
+      logger.error('Failed to parse FISH_REFERENCES as JSON:', error);
+      logger.error('Please use JSON array format: [{"reference_id":"id1","name":"Alice","tags":["female","english"]}]');
     }
   }
   
@@ -96,7 +97,7 @@ export function loadConfig(): Config {
       mkdirSync(resolvedOutputDir, { recursive: true });
     }
   } catch (error) {
-    console.error(`Warning: Could not create audio output directory at ${resolvedOutputDir}. Audio files will be saved to memory only.`);
+    logger.error(`Warning: Could not create audio output directory at ${resolvedOutputDir}. Audio files will be saved to memory only.`);
   }
 
   const streaming = parseBoolean(process.env.FISH_STREAMING, false);

@@ -13,6 +13,7 @@ import { writeFileSync, createWriteStream } from 'fs';
 import { playAudio, isAudioPlaybackSupported } from '../utils/audioPlayer.js';
 import { RealTimeAudioPlayer } from '../utils/realTimePlayer.js';
 import { ReferenceSelector } from '../utils/referenceSelector.js';
+import { logger } from '../utils/logger.js';
 
 export class TTSTool {
   name = 'fish_audio_tts';
@@ -176,7 +177,7 @@ export class TTSTool {
           try {
             await playAudio(outputPath);
           } catch (playError) {
-            console.error('Audio playback failed:', playError);
+            logger.error('Audio playback failed:', playError);
           }
         }
 
@@ -199,7 +200,7 @@ export class TTSTool {
             try {
               await playAudio(outputPath);
             } catch (playError) {
-              console.error('Audio playback failed:', playError);
+              logger.error('Audio playback failed:', playError);
             }
           }
           
@@ -296,7 +297,7 @@ export class TTSTool {
           await playAudio(outputPath);
           played = true;
         } catch (playError) {
-          console.error('Audio playback failed:', playError);
+          logger.error('Audio playback failed:', playError);
         }
       } else if (shouldRealtimePlay) {
         played = true;

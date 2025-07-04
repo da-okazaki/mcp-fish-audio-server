@@ -1,6 +1,7 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { platform } from 'os';
+import { logger } from './logger.js';
 
 const execAsync = promisify(exec);
 
@@ -26,7 +27,7 @@ export async function playAudio(filePath: string): Promise<void> {
   try {
     await execAsync(command);
   } catch (error) {
-    console.error(`Failed to play audio: ${error}`);
+    logger.error('Failed to play audio:', error);
     throw new Error(`Audio playback failed: ${error}`);
   }
 }
