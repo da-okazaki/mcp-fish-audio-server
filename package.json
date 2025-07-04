@@ -1,6 +1,6 @@
 {
   "name": "@alanse/fish-audio-mcp-server",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "description": "MCP server for Fish Audio Text-to-Speech integration",
   "main": "dist/index.js",
   "type": "module",
@@ -63,5 +63,6 @@
   "bugs": {
     "url": "https://github.com/da-okazaki/mcp-fish-audio-server/issues"
   },
-  "homepage": "https://github.com/da-okazaki/mcp-fish-audio-server#readme"
+  "homepage": "https://github.com/da-okazaki/mcp-fish-audio-server#readme",
+  "icon": "./dcos/icon_fish-audio.webp"
 }
