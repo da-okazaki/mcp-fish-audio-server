@@ -1,5 +1,5 @@
 import { config as dotenvConfig } from 'dotenv';
-import { Config, AudioFormat, Mp3Bitrate } from '../types/index.js';
+import { Config, AudioFormat, Mp3Bitrate, ReferenceConfig } from '../types/index.js';
 import { existsSync, mkdirSync } from 'fs';
 import { join, resolve } from 'path';
 import { homedir } from 'os';
@@ -26,6 +26,48 @@ function parseMp3Bitrate(value: string | undefined, defaultValue: Mp3Bitrate): M
 }
 
 let configCache: Config | null = null;
+
+function parseReferences(): ReferenceConfig[] {
+  const references: ReferenceConfig[] = [];
+  
+  // Parse FISH_REFERENCES as JSON array
+  const referencesStr = process.env.FISH_REFERENCES;
+  if (referencesStr) {
+    try {
+      const parsedRefs = JSON.parse(referencesStr);
+      if (Array.isArray(parsedRefs)) {
+        for (const ref of parsedRefs) {
+          if (ref.reference_id || ref.id) {
+            references.push({
+              id: ref.reference_id || ref.id,
+              name: ref.name,
+              tags: ref.tags
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Failed to parse FISH_REFERENCES as JSON:', error);
+      console.error('Please use JSON array format: [{"reference_id":"id1","name":"Alice","tags":["female","english"]}]');
+    }
+  }
+  
+  // Fallback: support individual reference configs for backward compatibility
+  if (references.length === 0) {
+    for (let i = 1; i <= 10; i++) {
+      const id = process.env[`FISH_REFERENCE_${i}_ID`];
+      if (id) {
+        references.push({
+          id,
+          name: process.env[`FISH_REFERENCE_${i}_NAME`],
+          tags: process.env[`FISH_REFERENCE_${i}_TAGS`]?.split(',').map(t => t.trim())
+        });
+      }
+    }
+  }
+  
+  return references;
+}
 
 export function loadConfig(): Config {
   if (configCache) {
@@ -60,10 +102,16 @@ export function loadConfig(): Config {
   const streaming = parseBoolean(process.env.FISH_STREAMING, false);
   const autoPlay = parseBoolean(process.env.FISH_AUTO_PLAY, false);
   
+  // Parse references
+  const references = parseReferences();
+  const defaultReference = process.env.FISH_DEFAULT_REFERENCE || process.env.FISH_REFERENCE_ID;
+  
   const config: Config = {
     apiKey,
     modelId: process.env.FISH_MODEL_ID || 's1',
-    referenceId: process.env.FISH_REFERENCE_ID,
+    referenceId: process.env.FISH_REFERENCE_ID, // Keep for backward compatibility
+    references,
+    defaultReference,
     outputFormat: parseAudioFormat(process.env.FISH_OUTPUT_FORMAT, 'mp3'),
     streaming: streaming,
     mp3Bitrate: parseMp3Bitrate(process.env.FISH_MP3_BITRATE, 128),

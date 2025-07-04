@@ -7,6 +7,7 @@ import {
   ListToolsRequestSchema 
 } from '@modelcontextprotocol/sdk/types.js';
 import { TTSTool } from './tools/tts.js';
+import { ListReferencesTool } from './tools/listReferences.js';
 import { loadConfig } from './utils/config.js';
 
 async function main() {
@@ -27,22 +28,25 @@ async function main() {
       }
     );
 
-    // Create and register TTS tool
+    // Create and register tools
     const ttsTool = new TTSTool();
+    const listRefTool = new ListReferencesTool();
+    
+    const tools = [ttsTool, listRefTool];
     
     server.setRequestHandler(ListToolsRequestSchema, async () => ({
-      tools: [
-        {
-          name: ttsTool.name,
-          description: ttsTool.description,
-          inputSchema: ttsTool.inputSchema,
-        },
-      ],
+      tools: tools.map(tool => ({
+        name: tool.name,
+        description: tool.description,
+        inputSchema: tool.inputSchema,
+      })),
     }));
 
     server.setRequestHandler(CallToolRequestSchema, async (request) => {
-      if (request.params.name === ttsTool.name) {
-        const result = await ttsTool.run(request.params.arguments as any);
+      const tool = tools.find(t => t.name === request.params.name);
+      
+      if (tool) {
+        const result = await tool.run(request.params.arguments as any);
         return {
           content: [
             {

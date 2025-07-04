@@ -12,6 +12,7 @@ import { loadConfig, getOutputPath } from '../utils/config.js';
 import { writeFileSync, createWriteStream } from 'fs';
 import { playAudio, isAudioPlaybackSupported } from '../utils/audioPlayer.js';
 import { RealTimeAudioPlayer } from '../utils/realTimePlayer.js';
+import { ReferenceSelector } from '../utils/referenceSelector.js';
 
 export class TTSTool {
   name = 'fish_audio_tts';
@@ -28,6 +29,14 @@ export class TTSTool {
       reference_id: {
         type: 'string',
         description: 'Voice model reference ID (optional)'
+      },
+      reference_name: {
+        type: 'string',
+        description: 'Voice model name to search for (optional)'
+      },
+      reference_tag: {
+        type: 'string',
+        description: 'Voice model tag to search for (optional)'
       },
       streaming: {
         type: 'boolean',
@@ -105,10 +114,38 @@ export class TTSTool {
 
       const config = loadConfig();
       
+      // Select reference ID based on input parameters
+      let selectedReferenceId: string | undefined;
+      
+      if (input.reference_id || input.reference_name || input.reference_tag) {
+        // Use reference selector if references are configured
+        if (config.references && config.references.length > 0) {
+          const selector = new ReferenceSelector(config.references, config.defaultReference);
+          selectedReferenceId = selector.selectReference({
+            id: input.reference_id,
+            name: input.reference_name,
+            tag: input.reference_tag
+          });
+          
+          if (!selectedReferenceId && (input.reference_name || input.reference_tag)) {
+            return {
+              success: false,
+              error: `No reference found matching: ${input.reference_name || input.reference_tag}`
+            };
+          }
+        } else {
+          // Fallback to direct ID if no references configured
+          selectedReferenceId = input.reference_id;
+        }
+      } else {
+        // Use default reference or backward compatible referenceId
+        selectedReferenceId = config.defaultReference || config.referenceId;
+      }
+      
       // Prepare parameters
       const ttsParams = {
         text: input.text,
-        referenceId: input.reference_id || config.referenceId,
+        referenceId: selectedReferenceId,
         format: (input.format || config.outputFormat) as AudioFormat,
         mp3Bitrate: (input.mp3_bitrate || config.mp3Bitrate) as Mp3Bitrate,
         normalize: input.normalize !== false,

@@ -1,7 +1,15 @@
+export interface ReferenceConfig {
+  id: string;
+  name?: string;
+  tags?: string[];
+}
+
 export interface Config {
   apiKey: string;
   modelId: string;
   referenceId?: string;
+  references?: ReferenceConfig[];
+  defaultReference?: string;
   outputFormat: AudioFormat;
   streaming: boolean;
   mp3Bitrate: Mp3Bitrate;
@@ -36,6 +44,8 @@ export interface TTSResponse {
 export interface TTSToolParams {
   text: string;
   reference_id?: string;
+  reference_name?: string;
+  reference_tag?: string;
   streaming?: boolean;
   websocket_streaming?: boolean;
   realtime_play?: boolean;
