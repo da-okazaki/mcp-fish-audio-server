@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.1] - 2025-01-04
+
+### Fixed
+- Fixed MCP JSON communication issues by replacing console output with logger utility
+- Logger only outputs when DEBUG environment variable is set
+- Prevents stdout/stderr messages from interfering with MCP JSON-RPC protocol
+
+## [0.6.0] - 2025-01-03
+
+### Added
+- Multiple voice reference management system
+- New tool: `fish_audio_list_references` to list configured voices
+- Voice selection by name or tag in addition to ID
+- Support for configuring multiple voices with metadata
+- Added FISH_REFERENCES and FISH_DEFAULT_REFERENCE environment variables
+- Enhanced voice selection with priority: ID > Name > Tag > Default
+
+### Changed
+- References can now be configured as JSON array or individual environment variables
+- Improved voice selection logic with metadata support
+
 ## [0.5.4] - 2025-01-03
 
 ### Fixed
