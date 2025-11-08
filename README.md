@@ -4,6 +4,10 @@
   <img src="./dcos/icon_fish-audio.webp" alt="Fish Audio Logo" width="300" height="300" />
 </div>
 
+<a href="https://glama.ai/mcp/servers/@da-okazaki/mcp-fish-audio-server">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@da-okazaki/mcp-fish-audio-server/badge" alt="FishAudio Server MCP server" />
+</a>
+
 [![npm version](https://badge.fury.io/js/@alanse%2Ffish-audio-mcp-server.svg)](https://badge.fury.io/js/@alanse%2Ffish-audio-mcp-server) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
