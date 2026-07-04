@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/da-okazaki-mcp-fish-audio-server-badge.png)](https://mseep.ai/app/da-okazaki-mcp-fish-audio-server)
+
 # Fish Audio MCP Server
 
 <div align="center">
