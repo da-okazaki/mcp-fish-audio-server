@@ -1,10 +1,28 @@
 import { config as dotenvConfig } from 'dotenv';
 import { Config, AudioFormat, Mp3Bitrate, ReferenceConfig } from '../types/index.js';
 import { existsSync, mkdirSync } from 'fs';
-import { join, resolve } from 'path';
+import { join, resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { homedir } from 'os';
 import { logger } from './logger.js';
 
+// Load .env from THIS PACKAGE's directory, not from process.cwd().
+//
+// A bare dotenvConfig() reads ./.env relative to wherever the process happens
+// to have been started — which is fine when you run `npm start` in the repo,
+// and wrong for an MCP server. An MCP client spawns this binary with the
+// client's own working directory, so the .env sitting next to the server is
+// never found, every setting silently falls back to its default, and the
+// server exits on the missing API key with nothing to say why.
+//
+// dist/utils/config.js → ../../ is the package root, which is also correct
+// when running from src/ under tsx (src/utils → ../../).
+const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
+dotenvConfig({ path: join(packageRoot, '.env') });
+// Then fall back to the ambient environment / cwd .env, so an operator who
+// prefers to pass FISH_API_KEY straight through the MCP client config still
+// works. dotenv never overwrites an already-set variable, so the package .env
+// above wins where both exist.
 dotenvConfig();
 
 function parseBoolean(value: string | undefined, defaultValue: boolean): boolean {
